@@ -1,6 +1,6 @@
 # Медиатека
 
-196 альбомов для офлайн-прослушивания. Плеер — Cayin N3Ultra, наушники — Moondrop Blessing.
+197 альбомов для офлайн-прослушивания. Плеер — Cayin N3Ultra, наушники — Moondrop Blessing.
 Хард-боп Blue Note, необычная электроника, ню-джаз и Tom Waits.
 
 ## Как устроено
@@ -10,13 +10,13 @@
 
 | Жанр | Папка | Альбомов | Артистов |
 |---|---|---:|---:|
-| [Джаз](#джаз) | `JAZZ/` | 83 | 51 |
+| [Джаз](#джаз) | `JAZZ/` | 84 | 52 |
 | [Ню-джаз](#ню-джаз) | `Nu Jazz:Funk/` | 17 | 6 |
-| [Электроника](#электроника) | `ELECTRO/` | 37 | 23 |
-| [Эмбиент и даунтемпо](#эмбиент-и-даунтемпо) | `AMBIENT/` | 30 | 16 |
+| [Электроника](#электроника) | `ELECTRO/` | 36 | 22 |
+| [Эмбиент и даунтемпо](#эмбиент-и-даунтемпо) | `AMBIENT/` | 31 | 17 |
 | [Рок и авторская песня](#рок-и-авторская-песня) | `ROCK/` | 23 | 7 |
 | [Блюз](#блюз) | `BLUES/` | 6 | 5 |
-| **Всего** | | **196** | |
+| **Всего** | | **197** | |
 
 ### Формат
 
@@ -28,7 +28,7 @@
 | `SACD` | образ диска Super Audio CD |
 | `MP3` | сжатый файл |
 
-По форматам: `DSD256` — 2 · `DSD128` — 3 · `24/192` — 92 · `24/96` — 16 · `24/88.2` — 1 · `24/48` — 8 · `24/44.1` — 19 · `16/44.1` — 44 · `SACD` — 9 · `MP3` — 2.
+По форматам: `DSD256` — 2 · `DSD128` — 3 · `24/192` — 93 · `24/96` — 16 · `24/88.2` — 1 · `24/48` — 8 · `24/44.1` — 19 · `16/44.1` — 44 · `SACD` — 9 · `MP3` — 2.
 
 
 ## Джаз
@@ -122,6 +122,7 @@
 
 | Артист | Альбом | Год | Формат |
 |---|---|---|---|
+| Bill Evans Trio | Portrait In Jazz | 2017 | 24/192 |
 | Floating Points, Pharoah Sanders & LSO | Promises | 2021 | 24/96 |
 | Kamasi Washington | Heaven and Earth | 2018 | 16/44.1 |
 | Keith Jarrett / Jan Garbarek | Belonging | 1974 | 24/192 |
@@ -190,7 +191,6 @@
 | Nia Archives | Emotional Junglist | 2026 | 24/48 |
 | Nitzer Ebb | That Total Age | 1987 | 16/44.1 |
 | Ricardo Villalobos | Alcachofa | 2003 | 24/96 |
-| Skee Mask | Compro | 2018 | 24/48 |
 | Stephan Bodzin | Powers of Ten | 2015 | 16/44.1 |
 | The Cinematic Orchestra | Every Day | 2002 | 24/192 |
 | The Crystal Method | Post Punk | 2022 | 24/48 |
@@ -231,6 +231,7 @@
 | Portishead | Dummy | 1994 | 24/192 |
 | Ravin | Buddha-Bar XXVIII | 2026 | 24/44.1 |
 | SiJ | Eden | 2026 | 24/48 |
+| Skee Mask | Compro | 2018 | 24/48 |
 | Supreme Beings of Leisure | 11i | 2008 | 16/44.1 |
 | Tycho | Dive | 2011 | 16/44.1 |
 | Various Artists | Café del Mar 40th Anniversary | 2020 | 16/44.1 |
@@ -282,3 +283,4 @@
 ---
 
 Что хочу добавить — [wishlist.md](wishlist.md).
+База собирается из тегов файлов: `python3 scripts/build_readme.py`.

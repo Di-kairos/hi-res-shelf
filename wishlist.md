@@ -14,7 +14,6 @@
 | Miles Davis — *Kind of Blue* | 1959 | Модальный джаз, точка отсчёта |
 | Dave Brubeck Quartet — *Time Out* | 1959 | Нечётные размеры, которые насвистываешь |
 | Charles Mingus — *Mingus Ah Um* | 1959 | Контрабас как дирижёр |
-| Bill Evans Trio — *Portrait in Jazz* | 1960 | Трио, где бас и барабаны — равные голоса |
 | Miles Davis — *Sketches of Spain* | 1960 | Майлз и оркестр Гила Эванса |
 | Bill Evans Trio — *Sunday at the Village Vanguard* | 1961 | Живой зал, слышно бокалы |
 | Stan Getz / João Gilberto — *Getz/Gilberto* | 1964 | Тишина как часть аранжировки |
