@@ -1,13 +1,14 @@
-"""Собирает README.md — базу медиатеки — из тегов аудиофайлов в ~/Music.
+"""Собирает README.md — базу медиатеки — из тегов аудиофайлов в ~/Music и заметок из notes.tsv.
 
 Запуск из корня репозитория:  python3 scripts/build_readme.py
 Нужен ffprobe (brew install ffmpeg). Другая папка с музыкой: MUSIC=/path python3 scripts/build_readme.py
 
 Медиатека разложена как ЖАНР/Артист/Альбом. Альбом = папка с аудиофайлами;
 папки CD1/CD2 сводятся к родительской. Название, артист и год берутся из тегов
-первого файла (для образа с CUE — из CUE), формат — из самого файла.
+первого файла (для образа с CUE — из CUE). Заметка к альбому — из notes.tsv
+(артист, альбом, заметка через табуляцию); нет заметки — ячейка пустая.
 """
-import glob, json, os, re, subprocess
+import csv, glob, json, os, re, subprocess
 
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MUSIC = os.environ.get("MUSIC", os.path.expanduser("~/Music"))
@@ -28,7 +29,10 @@ ARTIST = {"Boards Of Canada": "Boards of Canada", "Four 80 East": "Four80East",
           "Keith Jarrett;Jan Garbarek, Palle Danielsson, Jon Christensen": "Keith Jarrett / Jan Garbarek",
           "Floating Points, Pharoah Sanders, The London Symphony Orchestra": "Floating Points, Pharoah Sanders & LSO",
           "Tom Waits And Crystal Gayle": "Tom Waits & Crystal Gayle", "Jean Michel Jarre": "Jean-Michel Jarre",
-          "Buddha-Bar": "Ravin"}
+          "Buddha-Bar": "Ravin",
+          # бокс Blue Note: сокращения из имён папок
+          "Art Blakey & TJM": "Art Blakey & The Jazz Messengers",
+          "Horace Silver And The Jazz Messengers": "Horace Silver"}
 # Служебные хвосты в тегах альбома: ремастер, разрядность, номер диска, издание
 JUNK = [r"\s*\[[^\]]*\]$", r",\s*\(.*$", r"\s*\((\d{4} )?Remaster(ed)?(, \d{4})?\)$", r"\s*\(24 ?bit[^)]*\)",
         r"\s*\(Reissue\)$", r"\s*\(Instrumental\)$", r"\s*\([^)]*Deluxe[^)]*\)", r"\s*\([^)]*Compilation[^)]*\)",
@@ -47,23 +51,25 @@ ALBUM = {
     "Hungry 5": ("Hungry 5: The Best of 5 Years", None),
     "Belonging": ("Belonging", "1974"),
     "Violator": ("Violator", "1990"),
+    "Portrait In Jazz": ("Portrait in Jazz", "1960"),
     "One From The Heart": ("One from the Heart", None),
     "Your Queen Is A Reptile": ("Your Queen Is a Reptile", None),
     "Brawlers": ("Orphans: Brawlers, Bawlers & Bastards", "2006"),  # три диска Orphans — одной строкой
+    # бокс Blue Note: сокращения из имён папок
+    "HS And TJM": ("Horace Silver and the Jazz Messengers", None),
+    "That's Where...": ("That's Where It's At", None),
+    "WITBA": ("Who Is This Bitch, Anyway?", None),
 }
 DROP = {"Spirit Of Eden", "DJ-Kicks: Moodymann", "Bawlers", "Bastards"}
-FMT_ORDER = ["DSD256", "DSD128", "DSD64", "24/192", "24/96", "24/88.2", "24/48", "24/44.1", "16/44.1", "SACD", "MP3"]
 
 
 def probe(path):
-    out = subprocess.run(["ffprobe", "-v", "quiet", "-print_format", "json", "-show_format", "-show_streams", path],
+    out = subprocess.run(["ffprobe", "-v", "quiet", "-print_format", "json", "-show_format", path],
                          capture_output=True, text=True).stdout
     try:
-        d = json.loads(out)
+        return {k.lower(): v for k, v in json.loads(out).get("format", {}).get("tags", {}).items()}
     except ValueError:
-        return {}, {}
-    tags = {k.lower(): v for k, v in d.get("format", {}).get("tags", {}).items()}
-    return tags, next((s for s in d.get("streams", []) if s.get("codec_type") == "audio"), {})
+        return {}
 
 
 def cue_tags(folder):
@@ -73,16 +79,6 @@ def cue_tags(folder):
             get = lambda k: (re.search(rf'^\s*{k}\s+"?(.+?)"?\s*$', head, re.M) or [None, ""])[1]
             return {"album": get("TITLE"), "artist": get("PERFORMER"), "date": get("REM DATE")}
     return {}
-
-
-def fmt(codec, sr, bits):
-    if codec == "iso":
-        return "SACD"
-    if codec.startswith("dsd"):  # ffprobe отдаёт частоту DSD, делённую на 8
-        return {"352800": "DSD64", "705600": "DSD128", "1411200": "DSD256"}.get(sr, "DSD")
-    if codec == "mp3":
-        return "MP3"
-    return f"{bits or 16}/{int(sr) / 1000:g}"
 
 
 def clean(title):
@@ -95,7 +91,7 @@ def clean(title):
 
 
 def scan():
-    """→ {жанр: [(артист, альбом, год, формат)]}"""
+    """→ {жанр: [(артист, альбом, год)]}"""
     units = {}
     for root, dirs, files in os.walk(MUSIC):
         dirs[:] = [x for x in dirs if not x.startswith(".")]
@@ -115,78 +111,76 @@ def scan():
         top = os.path.relpath(unit, MUSIC).split(os.sep)[0]
         if first.lower().endswith(".iso"):  # у образа SACD тегов нет: «ГГГГ - Альбом (...)» в папке артиста
             m = re.match(r"(\d{4}) - (.+?)(?: \([^()]*\))?$", os.path.basename(unit))  # последняя скобка — каталожный номер
-            artist, album, year, f = os.path.basename(os.path.dirname(unit)), m[2], m[1], "SACD"
+            artist, album, year = os.path.basename(os.path.dirname(unit)), m[2], m[1]
         else:
-            tags, st = probe(first)
+            tags = probe(first)
             if not tags.get("album"):
                 tags = {**cue_tags(os.path.dirname(first)), **{k: v for k, v in tags.items() if v}}
             artist = tags.get("album_artist") or tags.get("albumartist") or tags.get("artist") or ""
             album, year = clean(tags.get("album", "")), (tags.get("date") or tags.get("year") or "")[:4]
-            f = fmt(st.get("codec_name", ""), st.get("sample_rate", "0"), st.get("bits_per_raw_sample"))
         if album in DROP:
             continue
         artist = ARTIST.get(artist.strip(), artist.strip())
         album, fix = ALBUM.get(album, (album, None))
         genre = top if top in rows else GENRE_BY_ARTIST.get(artist)
         if genre:
-            rows[genre].append((artist, album, fix or year, f))
+            rows[genre].append((artist, album, fix or year))
         else:
             print(f"! жанр не определён, пропущено: {os.path.relpath(unit, MUSIC)}")
     return rows
 
 
 def box():
-    """Состав бокса Blue Note из имён папок «CDnn - Артист - Альбом (год)»."""
+    """Состав бокса Blue Note из имён папок «CDnn - Артист - Альбом (год)» → [(№, артист, альбом, год)]."""
     d = (glob.glob(os.path.join(MUSIC, "JAZZ", "*", f"*{BOX}*")) or [""])[0]
     items = [re.match(r"CD(\d+) - (.+?) - (.+) \((\d{4})\)$", x) for x in sorted(os.listdir(d))] if d else []
-    return [(int(m[1]), m[2], m[3], m[4]) for m in items if m]
+    return [(int(m[1]), ARTIST.get(m[2], m[2]), ALBUM.get(m[3], (m[3],))[0], m[4]) for m in items if m]
 
 
-def render(rows, bn):
+def load_notes():
+    with open(os.path.join(REPO, "notes.tsv"), encoding="utf-8", newline="") as f:
+        return {(r["artist"], r["album"]): r["note"] for r in csv.DictReader(f, delimiter="\t")}
+
+
+def render(rows, bn, notes):
+    used = set()
+
+    def note(artist, album):
+        used.add((artist, album))
+        return notes.get((artist, album), "")
+
     total = sum(len(v) for v in rows.values()) + len(bn)
-    fmts = {}
-    for r in (x for v in rows.values() for x in v):
-        fmts[r[3]] = fmts.get(r[3], 0) + 1
-    if bn:
-        fmts["24/192"] = fmts.get("24/192", 0) + len(bn)
     out = ["# Медиатека\n",
            f"{total} альбомов для офлайн-прослушивания. Плеер — Cayin N3Ultra, наушники — Moondrop Blessing.",
            "Хард-боп Blue Note, необычная электроника, ню-джаз и Tom Waits.\n",
            "## Как устроено\n",
-           "Файлы лежат по схеме `ЖАНР/Артист/Альбом`. Шесть жанровых папок — шесть разделов ниже, в том же порядке.",
-           "В каждой таблице: артист, альбом, год выпуска и формат файла.\n",
-           "| Жанр | Папка | Альбомов | Артистов |\n|---|---|---:|---:|"]
+           "Файлы лежат по схеме `ЖАНР/Артист/Альбом`. Шесть жанров — шесть разделов ниже, в том же порядке.",
+           "В каждой таблице: артист, альбом, год выпуска и пара слов об альбоме.\n",
+           "| Жанр | Альбомов | Артистов |\n|---|---:|---:|"]
     for key, title in SECTIONS:
         n = len(rows[key]) + (len(bn) if key == "JAZZ" else 0)
         artists = {r[0] for r in rows[key]} | ({b[1] for b in bn} if key == "JAZZ" else set())
-        out.append(f"| [{title}](#{title.lower().replace(' ', '-')}) | `{key}/` | {n} | {len(artists)} |")
-    out += [f"| **Всего** | | **{total}** | |\n",
-            "### Формат\n",
-            "| Обозначение | Что значит |\n|---|---|",
-            "| `24/192`, `24/96` … | 24 бита, частота в кГц — хайрез |",
-            "| `16/44.1` | 16 бит, 44.1 кГц — качество CD |",
-            "| `DSD128`, `DSD256` | DSD: частота в 128 и 256 раз выше 44.1 кГц |",
-            "| `SACD` | образ диска Super Audio CD |",
-            "| `MP3` | сжатый файл |\n",
-            "По форматам: " + " · ".join(f"`{f}` — {fmts[f]}" for f in FMT_ORDER if f in fmts) + ".\n"]
+        out.append(f"| [{title}](#{title.lower().replace(' ', '-')}) | {n} | {len(artists)} |")
+    out.append(f"| **Всего** | **{total}** | |")
     for key, title in SECTIONS:
-        out += [f"\n## {title}\n", f"Папка `{key}/`\n"]
+        out.append(f"\n## {title}\n")
         if key == "JAZZ" and bn:
-            out.append(f"**Blue Note 75th Anniversary Collection** — {len(bn)} альбомов "
-                       f"{min(b[3] for b in bn)}–{max(b[3] for b in bn)}, 24/192.\n")
-            out.append("<details>\n<summary>Состав бокса</summary>\n\n| # | Артист | Альбом | Год |\n|---:|---|---|---|")
-            out += [f"| {n} | {a} | {t} | {y} |" for n, a, t, y in bn]
+            out.append(f"**Blue Note 75th Anniversary Collection** — {len(bn)} альбомов лейбла "
+                       f"{min(b[3] for b in bn)}–{max(b[3] for b in bn)}.\n")
+            out.append("<details>\n<summary>Состав бокса</summary>\n\n"
+                       "| # | Артист | Альбом | Год | Коротко |\n|---:|---|---|---|---|")
+            out += [f"| {n} | {a} | {t} | {y} | {note(a, t)} |" for n, a, t, y in bn]
             out.append("\n</details>\n")
-        out.append("| Артист | Альбом | Год | Формат |\n|---|---|---|---|")
-        out += [f"| {a} | {t} | {y} | {f} |" for a, t, y, f in sorted(rows[key], key=lambda r: (r[0].lower(), r[2]))]
+        out.append("| Артист | Альбом | Год | Коротко |\n|---|---|---|---|")
+        out += [f"| {a} | {t} | {y} | {note(a, t)} |" for a, t, y in sorted(rows[key], key=lambda r: (r[0].lower(), r[2]))]
     out.append("\n---\n\nЧто хочу добавить — [wishlist.md](wishlist.md).")
-    out.append("База собирается из тегов файлов: `python3 scripts/build_readme.py`.")
-    return "\n".join(out) + "\n", total
+    out.append("База собирается из тегов файлов и [notes.tsv](notes.tsv): `python3 scripts/build_readme.py`.")
+    missing = sorted(k for k in used if k not in notes)
+    stale = sorted(k for k in notes if k not in used)
+    return "\n".join(out) + "\n", total, missing, stale
 
 
 def selfcheck():
-    assert fmt("flac", "192000", "24") == "24/192" and fmt("flac", "44100", None) == "16/44.1"
-    assert fmt("dsd_lsbf_planar", "705600", None) == "DSD128" and fmt("iso", "", "") == "SACD"
     assert clean("Rain Dogs (2023 Remaster)") == "Rain Dogs"
     assert clean("Mezzanine (20th Anniversary Deluxe Edition) (Deluxe)") == "Mezzanine"
     assert clean("The Last Ship (Expanded Edition) CD2") == "The Last Ship (Expanded Edition)"
@@ -195,6 +189,8 @@ def selfcheck():
 
 if __name__ == "__main__":
     selfcheck()
-    text, total = render(scan(), box())
+    text, total, missing, stale = render(scan(), box(), load_notes())
     open(os.path.join(REPO, "README.md"), "w", encoding="utf-8").write(text)
-    print(f"README.md: {total} альбомов")
+    print(f"README.md: {total} альбомов, без заметки: {len(missing)}")
+    for a, t in stale:
+        print(f"! заметка ни к чему не привязана (переименован альбом?): {a} — {t}")
