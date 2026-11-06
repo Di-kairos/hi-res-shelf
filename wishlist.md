@@ -46,7 +46,6 @@
 | Альбом | Год | Почему |
 |---|---|---|
 | Front 242 — *Front by Front* | 1988 | EBM в высшей точке |
-| Underworld — *Dubnobasswithmyheadman* | 1994 | Голос как ещё один синтезатор |
 | Autechre — *Tri Repetae* | 1995 | Холодная механика Warp |
 | Goldie — *Timeless* | 1995 | Джангл с оркестровым размахом |
 | LTJ Bukem — *Logical Progression* | 1996 | Драм-н-бейс как атмосфера |
@@ -57,7 +56,6 @@
 | Autechre — *Confield* | 2001 | Самый чужой Autechre |
 | Burial — *Burial* | 2006 | Дебют, грубее Untrue |
 | The Field — *From Here We Go Sublime* | 2007 | Петли, растянутые до транса |
-| Aphex Twin — *Syro* | 2014 | Ритмическая сторона Aphex Twin |
 | Floating Points — *Elaenia* | 2015 | Синтезаторы, сыгранные как джаз |
 | Jlin — *Black Origami* | 2017 | Полиритмичный футворк |
 | Mr. Fingers — *Cerebral Hemispheres* | 2018 | Larry Heard, дип-хаус из первых рук |
@@ -66,7 +64,7 @@
 | Overmono — *Good Lies* | 2023 | UK garage, техно, джангл |
 | Blawan — *SickElixir* | 2025 | Индустриальное техно |
 
-### Арт-рок и авторская песня
+### Арт-рок
 
 | Альбом | Год | Почему |
 |---|---|---|

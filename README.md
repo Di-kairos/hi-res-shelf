@@ -1,6 +1,6 @@
 # Медиатека
 
-197 альбомов для офлайн-прослушивания. Плеер — Cayin N3Ultra, наушники — Moondrop Blessing.
+199 альбомов для офлайн-прослушивания. Плеер — Cayin N3Ultra, наушники — Moondrop Blessing.
 Хард-боп Blue Note, необычная электроника, ню-джаз и Tom Waits.
 
 ## Как устроено
@@ -12,11 +12,11 @@
 |---|---:|---:|
 | [Джаз](#джаз) | 84 | 50 |
 | [Ню-джаз](#ню-джаз) | 17 | 6 |
-| [Электроника](#электроника) | 36 | 22 |
+| [Электроника](#электроника) | 38 | 23 |
 | [Эмбиент и даунтемпо](#эмбиент-и-даунтемпо) | 31 | 17 |
-| [Рок и авторская песня](#рок-и-авторская-песня) | 23 | 7 |
+| [Рок](#рок) | 23 | 7 |
 | [Блюз](#блюз) | 6 | 5 |
-| **Всего** | **197** | |
+| **Всего** | **199** | |
 
 ## Джаз
 
@@ -145,6 +145,7 @@
 |---|---|---|---|
 | Amon Tobin | Supermodified | 2000 | Джазовые сэмплы, порезанные в драм-н-бейс |
 | Aphex Twin | Selected Ambient Works 85-92 | 1992 | Ранние домашние записи, классика эмбиент-техно |
+| Aphex Twin | Syro | 2014 | Первый альбом за 13 лет; Grammy |
 | Ben Böhmer | Breathing | 2019 | Дебютный альбом, мелодик-хаус |
 | Burial | Untrue | 2007 | Ночной Южный Лондон; номинант Mercury Prize |
 | Faithless | All Blessed | 2021 | Альбом без Maxi Jazz, с приглашёнными голосами |
@@ -175,6 +176,7 @@
 | Stephan Bodzin | Powers of Ten | 2015 | Дебютный альбом, мелодик-техно |
 | The Cinematic Orchestra | Every Day | 2002 | Голоса Fontella Bass и Roots Manuva |
 | The Crystal Method | Post Punk | 2022 |  |
+| Underworld | Dubnobasswithmyheadman | 1994 | Первый альбом с Darren Emerson |
 | Various Artists | Hungry 5: The Best of 5 Years | 2018 | Лучшее лейбла Hungry Music за пять лет |
 | Various Artists | OPIA Compilation 001 | 2024 | Сборник лейбла OPIA |
 | Various Artists | OPIA Compilation 002 | 2024 | Сборник лейбла OPIA |
@@ -216,7 +218,7 @@
 | Various Artists | Café del Mar 40th Anniversary | 2020 | Сборник к 40-летию бара на Ибице |
 | Various Artists | Chill Lounge del Mar 2026 | 2025 | Сборник, сведённый Matthew Kramer |
 
-## Рок и авторская песня
+## Рок
 
 | Артист | Альбом | Год | Коротко |
 |---|---|---|---|

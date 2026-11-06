@@ -18,7 +18,7 @@ DISC = re.compile(r"^(cd|disc|disk)[ ._-]*\d", re.I)
 BOX = "Blue Note 75th"  # бокс из 75 альбомов: показываем отдельным свёрнутым списком
 
 SECTIONS = [("JAZZ", "Джаз"), ("Nu Jazz:Funk", "Ню-джаз"), ("ELECTRO", "Электроника"),
-            ("AMBIENT", "Эмбиент и даунтемпо"), ("ROCK", "Рок и авторская песня"), ("BLUES", "Блюз")]
+            ("AMBIENT", "Эмбиент и даунтемпо"), ("ROCK", "Рок"), ("BLUES", "Блюз")]
 # Альбомы, ещё не разложенные органайзером по жанрам: жанр по артисту
 GENRE_BY_ARTIST = {"Ricardo Villalobos": "ELECTRO", "Skee Mask": "ELECTRO", "Sons of Kemet": "JAZZ",
                    "Yussef Kamaal": "Nu Jazz:Funk", "Nubya Garcia": "JAZZ", "Kamasi Washington": "JAZZ",
