@@ -82,6 +82,30 @@
 | Nick Cave & The Bad Seeds — *Ghosteen* | 2019 | Элегия на синтезаторе и фортепиано |
 | Nick Cave & The Bad Seeds — *Wild God* | 2024 | Театр уровня Tom Waits |
 
+### Классический рок
+
+| Альбом | Год | Почему |
+|---|---|---|
+| The Beatles — *Revolver* | 1966 | Петли магнитной ленты в Tomorrow Never Knows |
+| The Velvet Underground & Nico — *The Velvet Underground & Nico* | 1967 | Гудящий альт John Cale |
+| Frank Zappa — *Hot Rats* | 1969 | Джаз-рок; в Willie the Pimp поёт Captain Beefheart |
+| King Crimson — *In the Court of the Crimson King* | 1969 | Меллотрон и саксофон; с него начался прог |
+| Soft Machine — *Third* | 1970 | Кентерберийский джаз-рок: четыре вещи, каждая на сторону пластинки |
+| Can — *Tago Mago* | 1971 | Краут-рок: барабаны Liebezeit, склейки магнитной ленты |
+| The Who — *Who's Next* | 1971 | Органные петли и синтезатор в рок-гимнах |
+| Santana — *Caravanserai* | 1972 | Santana уходит в джаз-фьюжн |
+| Deep Purple — *Machine Head* | 1972 | Записан в Монтрё; Smoke on the Water — про пожар на концерте Zappa |
+| Roxy Music — *For Your Pleasure* | 1973 | Последний альбом с Eno: магнитные ленты и синтезатор |
+| Pink Floyd — *The Dark Side of the Moon* | 1973 | Синтезатор EMS в On the Run, саксофон Dick Parry |
+| Led Zeppelin — *Houses of the Holy* | 1973 | Фанк, регги, клавишные — блюза почти нет |
+| Supertramp — *Crime of the Century* | 1974 | Саксофон Helliwell, классика у аудиофилов |
+| Pink Floyd — *Wish You Were Here* | 1975 | Посвящение Syd Barrett |
+| David Bowie — *Low* | 1977 | Записан с Eno; вторая сторона — инструментальная электроника |
+| Steely Dan — *Aja* | 1977 | Соло Wayne Shorter в заглавной песне; эталон студийного звука |
+| Talking Heads — *Remain in Light* | 1980 | Продюсер Eno, полиритмы в духе Фелы Кути |
+| Peter Gabriel — *Peter Gabriel (Melt)* | 1980 | Барабаны без тарелок, сэмплер Fairlight, Kate Bush на бэк-вокале |
+| Dire Straits — *Brothers in Arms* | 1985 | Одна из первых цифровых записей; в Money for Nothing поёт Sting |
+
 ### Япония
 
 | Альбом | Год | Почему |
