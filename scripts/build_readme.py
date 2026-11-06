@@ -152,7 +152,8 @@ def render(rows, bn, notes):
     total = sum(len(v) for v in rows.values()) + len(bn)
     out = ["# Медиатека\n",
            f"{total} альбомов для офлайн-прослушивания. Плеер — Cayin N3Ultra, наушники — Moondrop Blessing.",
-           "Хард-боп Blue Note, необычная электроника, ню-джаз и Tom Waits.\n",
+           "Хард-боп Blue Note, необычная электроника, ню-джаз и Tom Waits.",
+           "На Mac её играет [Rubis Music](https://github.com/Di-kairos/Rubis) — мой плеер для macOS.\n",
            "## Как устроено\n",
            "Файлы лежат по схеме `ЖАНР/Артист/Альбом`. Шесть жанров — шесть разделов ниже, в том же порядке.",
            "В каждой таблице: артист, альбом, год выпуска и пара слов об альбоме.\n",

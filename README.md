@@ -2,6 +2,7 @@
 
 199 альбомов для офлайн-прослушивания. Плеер — Cayin N3Ultra, наушники — Moondrop Blessing.
 Хард-боп Blue Note, необычная электроника, ню-джаз и Tom Waits.
+На Mac её играет [Rubis Music](https://github.com/Di-kairos/Rubis) — мой плеер для macOS.
 
 ## Как устроено
 
