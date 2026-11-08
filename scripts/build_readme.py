@@ -39,6 +39,10 @@ JUNK = [r"\s*\[[^\]]*\]$", r",\s*\(.*$", r"\s*\((\d{4} )?Remaster(ed)?(, \d{4})?
         r"\s*\(?CD\s?\d\)?$"]
 # Чистое название → (как писать, год первого выпуска или None)
 ALBUM = {
+    "Village Vanguard": ("A Night at the Village Vanguard", None),
+    "All Blessed": ("All Blessed", "2020"),
+    "Spleen And Ideal": ("Spleen and Ideal", "1985"),
+    "Echo Other": ("Echo Other", "2006"),
     "Tomorrow's Harvest": ("Tomorrow's Harvest", "2013"),
     "Ambient 1 - Music For Airports": ("Ambient 1: Music for Airports", None),
     "XXVIII by Ravin": ("Buddha-Bar XXVIII", None),
@@ -90,6 +94,19 @@ def clean(title):
     return title.strip()
 
 
+SMALL = {"a", "an", "and", "as", "at", "but", "by", "for", "in", "nor", "of", "on", "or", "the", "to", "vs", "with"}
+
+
+def titlecase(s):
+    """Английские названия: служебные слова в середине — со строчной (Song for My Father), Vol.1 → Vol. 1."""
+    s = re.sub(r"\bVol\.(\d)", r"Vol. \1", s.replace("’", "'"))
+    words = s.split(" ")
+    for i, w in enumerate(words):
+        if 0 < i < len(words) - 1 and w.lower() in SMALL and not words[i - 1].endswith((":", "(")):
+            words[i] = w.lower()
+    return " ".join(words)
+
+
 def scan():
     """→ {жанр: [(артист, альбом, год)]}"""
     units = {}
@@ -124,22 +141,30 @@ def scan():
         album, fix = ALBUM.get(album, (album, None))
         genre = top if top in rows else GENRE_BY_ARTIST.get(artist)
         if genre:
-            rows[genre].append((artist, album, fix or year))
+            rows[genre].append((titlecase(artist), titlecase(album), fix or year))
         else:
             print(f"! жанр не определён, пропущено: {os.path.relpath(unit, MUSIC)}")
     return rows
+
+
+# В именах папок бокса часто год записи, а в таблице — год выпуска (по Wikipedia). Номер диска → год.
+BOX_YEAR = {2: "1952", 6: "1956", 10: "1958", 12: "1958", 16: "1958", 20: "1963", 24: "1962", 26: "1962",
+            27: "1962", 29: "1963", 32: "1963", 33: "1963", 35: "1964", 37: "1964", 43: "1965", 47: "1965",
+            50: "1965", 53: "1965", 54: "1966", 56: "1966", 58: "1966", 59: "1966", 61: "1966", 62: "1966",
+            65: "1967", 67: "1968"}
 
 
 def box():
     """Состав бокса Blue Note из имён папок «CDnn - Артист - Альбом (год)» → [(№, артист, альбом, год)]."""
     d = (glob.glob(os.path.join(MUSIC, "JAZZ", "*", f"*{BOX}*")) or [""])[0]
     items = [re.match(r"CD(\d+) - (.+?) - (.+) \((\d{4})\)$", x) for x in sorted(os.listdir(d))] if d else []
-    return [(int(m[1]), ARTIST.get(m[2], m[2]), ALBUM.get(m[3], (m[3],))[0], m[4]) for m in items if m]
+    return [(int(m[1]), titlecase(ARTIST.get(m[2], m[2])), titlecase(ALBUM.get(m[3], (m[3],))[0]),
+             BOX_YEAR.get(int(m[1]), m[4])) for m in items if m]
 
 
 def load_notes():
     with open(os.path.join(REPO, "notes.tsv"), encoding="utf-8", newline="") as f:
-        return {(r["artist"], r["album"]): r["note"] for r in csv.DictReader(f, delimiter="\t")}
+        return {(titlecase(r["artist"]), titlecase(r["album"])): r["note"] for r in csv.DictReader(f, delimiter="\t")}
 
 
 def render(rows, bn, notes):
@@ -154,6 +179,8 @@ def render(rows, bn, notes):
            f"{total} альбомов для офлайн-прослушивания. Плеер — Cayin N3Ultra, наушники — Moondrop Blessing.",
            "Хард-боп Blue Note, необычная электроника, ню-джаз и Tom Waits.",
            "На Mac её играет [Rubis Music](https://github.com/Di-kairos/Rubis) — мой плеер для macOS.\n",
+           "Что собираюсь добавить — в [wishlist.md](wishlist.md). Знаете, чего здесь не хватает, — "
+           "[напишите в Issues](https://github.com/Di-kairos/hi-res-shelf/issues/new).\n",
            "## Как устроено\n",
            "Файлы лежат по схеме `ЖАНР/Артист/Альбом`. Шесть жанров — шесть разделов ниже, в том же порядке.",
            "В каждой таблице: артист, альбом, год выпуска и пара слов об альбоме.\n",
@@ -173,7 +200,8 @@ def render(rows, bn, notes):
             out += [f"| {n} | {a} | {t} | {y} | {note(a, t)} |" for n, a, t, y in bn]
             out.append("\n</details>\n")
         out.append("| Артист | Альбом | Год | Коротко |\n|---|---|---|---|")
-        out += [f"| {a} | {t} | {y} | {note(a, t)} |" for a, t, y in sorted(rows[key], key=lambda r: (r[0].lower(), r[2]))]
+        out += [f"| {a} | {t} | {y} | {note(a, t)} |"
+                for a, t, y in sorted(rows[key], key=lambda r: (r[0].lower(), r[2], r[1].lower()))]
     out.append("\n---\n\nЧто хочу добавить — [wishlist.md](wishlist.md).")
     out.append("База собирается из тегов файлов и [notes.tsv](notes.tsv): `python3 scripts/build_readme.py`.")
     missing = sorted(k for k in used if k not in notes)
@@ -186,6 +214,11 @@ def selfcheck():
     assert clean("Mezzanine (20th Anniversary Deluxe Edition) (Deluxe)") == "Mezzanine"
     assert clean("The Last Ship (Expanded Edition) CD2") == "The Last Ship (Expanded Edition)"
     assert clean("The Slow Light (24bit-88.2kHz Resolution)") == "The Slow Light"
+    assert titlecase("Song For My Father") == "Song for My Father"
+    assert titlecase("That's Where It's At") == "That's Where It's At"
+    assert titlecase("Hungry 5: The Best Of 5 Years") == "Hungry 5: The Best of 5 Years"
+    assert titlecase("At The Golden Circle Vol.1") == "At the Golden Circle Vol. 1"
+    assert titlecase("The Serpent’s Egg") == "The Serpent's Egg"
 
 
 if __name__ == "__main__":

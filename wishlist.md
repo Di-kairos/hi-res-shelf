@@ -19,10 +19,10 @@
 | Stan Getz / João Gilberto — *Getz/Gilberto* | 1964 | Тишина как часть аранжировки |
 | John Coltrane Quartet — *Crescent* | 1964 | Колтрейн в балладах, без спешки |
 | John Coltrane — *A Love Supreme* | 1965 | Сюита в четырёх частях |
-| Freddie Hubbard — *First Light* | 1971 | Hubbard после Blue Note: струнные, Hancock, Carter |
+| Freddie Hubbard — *First Light* | 1971 | Hubbard на CTI: струнные Don Sebesky, Ron Carter |
 | Alice Coltrane — *Journey in Satchidananda* | 1971 | Арфа, тампура и Pharoah Sanders |
 | Esbjörn Svensson Trio — *Seven Days of Falling* | 2003 | Фортепианное трио с рок-динамикой |
-| Ezra Collective — *Where I'm Meant To Be* | 2022 | Лондон: афробит, хип-хоп, джаз |
+| Ezra Collective — *Where I'm Meant to Be* | 2022 | Лондон: афробит, хип-хоп, джаз |
 
 ### Ню-джаз и джаз с электроникой
 
@@ -113,13 +113,13 @@
 | Isao Suzuki — *Blow Up* | 1973 | Аудиофильский эталон лейбла Three Blind Mice |
 | Tsuyoshi Yamamoto Trio — *Midnight Sugar* | 1974 | Фортепианное трио Three Blind Mice |
 | Harry Hosono and the Yellow Magic Band — *Paraiso* | 1978 | Тропическая экзотика на синтезаторах |
-| Haruomi Hosono & Tadanori Yokoo — *Cochin Moon* | 1978 | Синтезатор и индийская перкуссия |
+| Haruomi Hosono & Tadanori Yokoo — *Cochin Moon* | 1978 | Синтезаторы и индийские мотивы |
 | Ryuichi Sakamoto — *Thousand Knives* | 1978 | Дебют Sakamoto, за шаг до YMO |
 | Yellow Magic Orchestra — *Yellow Magic Orchestra* | 1978 | Начало технопопа |
 | Yellow Magic Orchestra — *Solid State Survivor* | 1979 | Главный альбом технопопа |
 | Yellow Magic Orchestra — *X∞Multiplies* | 1980 | Электро-поп вперемешку со скетчами |
 | Ryuichi Sakamoto — *B-2 Unit* | 1980 | Холодный эксперимент, Riot in Lagos |
-| Yellow Magic Orchestra — *BGM* | 1981 | Мрачнее и тише, на сэмплере |
+| Yellow Magic Orchestra — *BGM* | 1981 | Мрачнее и тише; драм-машина TR-808 |
 | Yellow Magic Orchestra — *Technodelic* | 1981 | Сэмплы как материал, не украшение |
 | Haruomi Hosono — *Philharmony* | 1982 | Hosono один в своей студии |
 | Yasuaki Shimizu — *Kakashi* | 1982 | Джазовый саксофон и электроника |
